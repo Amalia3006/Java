@@ -1,0 +1,50 @@
+An instance of SPA involves an equal number of students and projects. A project may be of various types. For now, a project may be an application or an essay. A student may be enrolled in at most one project. A project may be assigned to at most one student. Each student has a set of acceptable projects.
+
+We consider the problem of allocating students to projects, such that each student receives one acceptable project.
+
+Example: 4 students, 5 projects (3 applications, 2 essays) A1, A2, A3, E1, E2.
+Student preferences
+S1: (A1, A2, A3)
+S2: (A1, E1)
+S3: (A2, A3, E1)
+S4: (A3, E2)
+A solution for this example might be: [(S1:A2),(S2:E1),(S3:A3),(S4:E2)]
+
+The main specifications of the application are:
+
+Create an object-oriented model of the problem. You should have (at least) the following classes: Student, Project, Application, Essay, Problem. 
+A student is described (at least) by the following properties: name and year of study. 
+A project must have (at least) the properties: name and deadline. Project must be an abstract class. 
+Applications will also have the property language and essays will have the property topic. The available languages and topics will be implemented as enum types. For example:
+public enum Topic {
+    ALGORITHMS, DATA_STRUCTURES, WEB, DATABASES;
+}
+Each class should have appropriate constructors, getters and setters. 
+Use the IDE features for code generation, such as generating getters and setters.
+The toString method form the Object class must be properly overridden for all the classes. 
+Use the IDE features for code generation, for example (in NetBeans) press Alt+Ins or invoke the context menu, select "Insert Code" and then "toString()" (or simply start typing "toString" and then press Ctrl+Space).
+Create and print on the screen the instance of the problem described in the example.
+        Student s1 = new Student("S1", 2);
+        Student s2 = ...;
+        ...
+        Application a1 = new Application("A1", LocalDate.of(2019, Month.JUNE, 1), Language.JAVA);
+        Essay e1 = new Essay("E1", LocalDate.parse("2019-06-01"), Topic.ALGORITHMS);
+        ...
+        ...
+        s1.setPreferences(a1, a2, a3);
+        s2.setPreferences(a1, e1);
+        ...
+        ...
+        Problem problem = new Problem();
+        problem.setStudents(s1, s2, s3, s4);
+        System.out.println(problem);
+Override the equals method form the Object class for the Student classe. The problem should not allow adding the same student, or project twice.
+Implement the method getProjects in the Problem class, returning an array of all the projects (distinct) specified in the students preferences.
+Implement a simple algorithm for allocating students to projects. The solution should be a matching between students and projects. Create a class to describe such a matching. 
+
+
+
+
+
+
+        
