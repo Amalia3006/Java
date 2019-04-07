@@ -1,0 +1,81 @@
+Visual Graph Manager 
+Rewrite the application from the previous lab so that its functionality is available also via a graphical user interface.
+The main specifications of the application are:
+
+a.
+
+Create a simple graphical user interface (using Swing) containing:
+A form for adding new graphs to the catalog. This form will contain input fields for name, type, path of the definition file, path of the image file, number of vertices and number of nodes. The type can be one of the values: simple or directed. The form will also contain a button for adding a new graph in the catalog. This panel must be placed at the top (north) part of the frame.
+A list for displaying the content of the catalog. This component must be placed in the center part of the frame.
+A control panel for managing items of the catalog (load, save, etc.). This panel will contains buttons for: load, save, etc. and it will be placed at the bottom (south) part of the frame.
+The application will contain (at least) the following classes:
+CatalogFrame: the main frame of the application (JFrame)
+GraphForm: the form for adding new graphs (JPanel containing components of the following types: JLabel, JTextField, JComboBox and JSpinner)
+CatalogList: the list of graphs (JList)
+ControlPanel: the command buttons (JPanel)
+Implement (at least) the functionality of the Add button: when pressing this button the values in the graph form will be concatenated and added to the list.
+The main method will only contain the invocation: new CatalogFrame().setVisible(true);
+For the compulsory part, it is not necessary to use the classes Catalog, Graph, etc. created in the previous lab.
+public class CatalogFrame extends JFrame {
+    GraphForm form;
+    CatalogList list;
+    ControlPanel control;       
+   	
+    public CatalogFrame() {
+        super("Visual Graph Manager");
+        init();
+    }
+    private void init() {
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        ...
+    }		
+    ...
+}
+public class CatalogList extends JList {
+    DefaultListModel model = new DefaultListModel<>();
+	
+    public CatalogList() {
+        String title = "<html><i><font color='blue'>" + 
+		    "Catalog Graphs" + "</font></i></hmtl>";
+        this.setBorder(BorderFactory.createTitledBorder(title));
+        this.setModel(model);        
+    }    
+    public void addGraph(String item) {
+        model.addElement(item);
+    }
+}	
+public class GraphForm extends JPanel {
+    private final CatalogFrame frame;
+    JLabel titleLabel = new JLabel("Name of the graph");
+    ...
+    JSpinner verticesField = new JSpinner(
+	    new SpinnerNumberModel(0, 1000));
+    ...
+    private void init() {               
+        ...
+        addButton.addActionListener(...);
+    }
+    private void addGraph() {
+        frame.list.addGraph(...);
+    }
+}
+public class ControlPanel extends JPanel {
+    private final CatalogFrame frame;
+    JButton loadBtn = new JButton("Load");
+	...
+    public ControlPanel(CatalogFrame frame) {
+        this.frame = frame;
+        init();
+    }
+    private void init() {
+        add(loadBtn);
+        ...
+    }
+}
+
+b.
+Integrate the model and the "businnes logic" code of the commands defined in the previous lab with the graphical user interface so that all the functionalities are implemented: save, load, open, report.
+Use a table in order to display the content of the catalog.
+Use a JFileChooser in order to select the definition and the image files.
+Warning: It is important to separate the GUI code of the application logic code!
+Warning: Create appropriate packages to organize your project!
