@@ -1,0 +1,86 @@
+Problem:
+
+Write a program that simulates a positional game, such as the connectivity game, between a given number of players.
+
+At the beginning of the game the board contains all the edges of a complete graph with n vertices (all the pairs formed with distinct numbers from 1 to n).
+Each player extracts edges successively from the board and must create with them a spanning tree of the initial complete graph.
+The game ends when either a player makes a spanning tree (in this case the winner receives n points and the others 0) or when all edges have been removed from the graph (in this case each player receives a number of points equal to the number of vertices of their largest partial tree).
+The players might take turns (or not...) and a time limit might be imposed (or not...).
+
+The main specifications of the application are:
+
+Compulsory:
+
+    Create the class Edge. An instance of this class will hold a pair of distinct numbers from 1 to n.
+    Create the class Graph. A graph will contain a list of edges.
+    Create the class Board. An instance of this class will contain at the beginning the complete graph Kn.
+
+    public class Board {
+        private final Graph complete;
+        public Board() { 
+            // create the complete graph 
+            // shuffle its edges
+        }
+        public ........... Edge extract() {
+            // replace the dots so that the board is thread-safe
+            Edge edge = complete.pollFirst();
+            return edge;
+        }
+        public boolean isEmpty() { ... }
+    }
+
+    Create the class Player. Each player will have a name and their own instance of a graph object. This class will implement the Runnable interface. In the run method the player will repeatedly extract one edge from the board.
+
+    public class Player implements Runnable {
+        ....
+        private String name;
+        private Game game;
+        private Graph graph;	
+        ...
+        private boolean play() throws InterruptedException {
+            Board board = game.getBoard();
+            if (board.isEmpty()) { return false; }
+            graph.add( board.extract() );
+            Thread.sleep(THINKING_TIME); //declare this constant
+            if (graph.isSpanningTree()) {
+    	        game.setWinner(this);
+            }
+            ...
+            return true;
+    	}
+        // implement the run() method, that will repeatedly extract edges
+        // implement the toString() method
+    }
+
+    Create the Game class. Simulate the game using a thread for each player.
+    Pay attention to the synchronization of the threads when extracting edges from the board.
+
+    public class Game {
+        private Board board;
+        private final List<Player> players = new ArrayList<>();
+        public void addPlayer(Player player) {
+            players.add(player);
+            player.setGame(this);
+        }
+        //Create getters and setters
+        //Create the method that will start the game: start one thread for each player
+    }
+
+    Test the game using a sequence similar with:
+
+        public static void main(String args[]) {
+            Game game = new Game();
+            game.setBoard(new Board(10));
+            game.addPlayer(new Player("Player 1"));
+            game.addPlayer(new Player("Player 2"));
+            game.addPlayer(new Player("Player 3"));
+            game.start();
+        }
+
+Optional:
+
+    Make sure that players wait their turns, using a wait-notify approach.
+    Implement a timekeeper thread that runs concurrently with the player threads, as a daemon. This thread will display the running time of the game and it will stop the game if it exceeds a certain time limit. Try it using larger values for n.
+    Consider the situation when each player might have a different strategy for extracting a word: automated (random or smart) or manual.
+    Player should be an abstract class having as subclasses: RandomPlayer, SmartPlayer, ManualPlayer.
+    A "smart" player should try to extend its maximal tree while not allowing others to create a spanning tree. A manual player will use the keyboard. Implement all three strategies. 
